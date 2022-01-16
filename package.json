@@ -1,0 +1,25 @@
+{
+  "name": "travel_advisor",
+  "version": "0.1.0",
+  "description": "Travel Advisor App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infamou5/Travel_Advisor.git"
+  },
+  "author": "Balint Szabad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Infamou5/Travel_Advisor/issues"
+  },
+  "homepage": "https://github.com/Infamou5/Travel_Advisor#readme",
+  "dependencies": {
+    "dotenv": "^12.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
