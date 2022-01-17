@@ -6,26 +6,34 @@ import Map from "./components/Map/Map";
 import { getPlacesData } from "./api";
 
 const App = () => {
-  const [places, setPlaces] = useState([]);
-  const [coordinates, setCoordinates] = useState({});
-  const [bounds, setBounds] = useState(null);
+
+  const INITIAL_PLACES_STATE = [];
+  const INITIAL_COORDINATES_STATE = {};
+  const INITIAL_BOUNDS_STATE = { southWest: {}, northEast: {} };
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [places, setPlaces] = useState(INITIAL_PLACES_STATE);
+  const [coordinates, setCoordinates] = useState(INITIAL_COORDINATES_STATE);
+  const [bounds, setBounds] = useState(INITIAL_BOUNDS_STATE);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setCoordinates({ lat: latitude, lng: longitude });
-    })
+    });
   }, []);
 
   useEffect(() => {
-    console.log(coordinates, bounds)
-
-    getPlacesData().then((data) => {
-      console.log(data);
-      setPlaces(data);
-    });
-  }, [coordinates, bounds]);
-
-
+    if (bounds) {
+      setIsLoading(true);
+      getPlacesData(bounds.southWest, bounds.northEast)
+        .then((data) => {
+          console.log(data);
+          setPlaces(data);
+        })
+        .catch((error) => console.log(error))
+        .finally(setIsLoading(false));
+    }
+  }, [bounds]);
 
   return (
     <>
@@ -33,7 +41,7 @@ const App = () => {
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
-          <List />
+          <List places={places} />
         </Grid>
         <Grid
           item
@@ -41,7 +49,11 @@ const App = () => {
           md={8}
           style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
         >
-          <Map coordinates={coordinates} setCoordinates={setCoordinates} setBounds={setBounds} />
+          <Map coordinates={coordinates} 
+          setCoordinates={setCoordinates} 
+          setBounds={setBounds}
+          places={places}
+          />
         </Grid>
       </Grid>
     </>
