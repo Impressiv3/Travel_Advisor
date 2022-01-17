@@ -35,7 +35,9 @@ const List = () => {
           </FormControl>
           <Grid container spacing={3} className={classes.list}>
               {places?.map((place, index ) => (
-                  <Grid item key={index} xs={12}>{place.name}</Grid>
+                  <Grid item key={index} xs={12}>
+                      <PlaceDetails place={place}/>
+                  </Grid>
               ))}
           </Grid>
       </div>
