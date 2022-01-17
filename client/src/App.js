@@ -6,26 +6,39 @@ import Map from "./components/Map/Map";
 import { getPlacesData } from "./api";
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [places, setPlaces] = useState([]);
   const [coordinates, setCoordinates] = useState({});
-  const [bounds, setBounds] = useState(null);
+  const [bounds, setBounds] = useState({ southWest: {}, northEast: {} });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       setCoordinates({ lat: latitude, lng: longitude });
-    })
+    });
   }, []);
 
-  useEffect(() => {
-    console.log(coordinates, bounds)
+  /*   useEffect(() => {
+    console.log("bounds:", bounds);
 
     getPlacesData().then((data) => {
       console.log(data);
       setPlaces(data);
     });
   }, [coordinates, bounds]);
+ */
 
-
+  useEffect(() => {
+    if (bounds) {
+      setIsLoading(true);
+      getPlacesData(bounds.southWest, bounds.northEast)
+        .then((data) => {
+          console.log(data);
+          setPlaces(data);
+        })
+        .catch((error) => console.log(error))
+        .finally(setIsLoading(false));
+    }
+  }, [bounds]);
 
   return (
     <>

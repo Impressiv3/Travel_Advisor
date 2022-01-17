@@ -21,17 +21,14 @@ const Map = ({coordinates, setCoordinates, setBounds}) => {
              defaultZoom={14}
              margin={[50, 50, 50, 50]}
              options={{ disableDefaultUI: true, zoomControl: true }}
-             onChange={(e) => {
-              setCoordinates({ lat: e.center.lat, lng: e.center.lng });
-              setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
+             onChange={(event) => {
+              setCoordinates({ lat: event.center.lat, lng: event.center.lng });
+              setBounds({ southWest: event.marginBounds.sw, northEast: event.marginBounds.ne});
              }}
             >
             </GoogleMapReact>
-        </div>
-    
+        </div>   
     )
-
-
 }
 
 export default Map;
